@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Invoice</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+
+        #invoice {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #4285f4;
+        }
+
+        p {
+            margin: 5px 0;
+            color: #777;
+        }
+
+        #company-details, #client-details {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4285f4;
+            color: #fff;
+        }
+
+        #total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 18px;
+            color: #4285f4;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+
+        .add-item-btn, .remove-item-btn, .update-client-btn {
+            background-color: #4285f4;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .add-item-btn:hover, .remove-item-btn:hover, .update-client-btn:hover {
+            background-color: #3367d6;
+        }
+
+        /* Additional Styles for Color Customization */
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #3367d6;
+            --background-color: #f8f8f8;
+            --text-color: #333;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        #invoice {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        #total {
+            color: var(--primary-color);
+        }
+
+        .add-item-btn, .remove-item-btn, .update-client-btn {
+            background-color: var(--primary-color);
+        }
+
+        .add-item-btn:hover, .remove-item-btn:hover, .update-client-btn:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="invoice">
+        <header>
+            <h1>Cybertec164 - Invoice</h1>
+            <p id="invoice-number">Invoice #1</p>
+        </header>
+
+        <div id="company-details">
+            <p>Cybertec164</p>
+            <p>6345, akbarpur,ambedkar nagar,UP, India</p>
+            <p>Email: patelsuryansh164@gmail.com | Phone: (|+91) 9219515310</p>
+        </div>
+
+        <div id="client-details">
+            <p id="client-name">Client: Client Name</p>
+            <p id="client-address">Address: 456 Client Street, City, Country</p>
+            <p id="client-contact">Email: client@email.com | Phone: (789) 012-3456</p>
+            <button class="update-client-btn" onclick="updateClient()">Update Client Details</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example item rows -->
+                <tr class="item-row">
+                    <td>Item 1</td>
+                    <td>service charge</td>
+                    <td>$0.01</td>
+                    <td>0</td>
+                    <td>$0.01</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button class="add-item-btn" onclick="addItem()">Add Item</button>
+        <button class="remove-item-btn" onclick="removeItem()">Remove Last Item</button>
+
+        <div id="total">
+            <p>Total: $20.00</p>
+        </div>
+
+        <footer>
+            <p>Thank you for your business!</p>
+        </footer>
+    </div>
+
+    <script>
+        let invoiceCounter = 1;
+
+        function updateInvoiceNumber() {
+            const invoiceNumber = document.getElementById('invoice-number');
+            invoiceNumber.textContent = `Invoice #${invoiceCounter}`;
+        }
+
+        function updateClient() {
+            const name = prompt('Enter client name:');
+            const address = prompt('Enter client address:');
+            const contact = prompt('Enter client contact details:');
+
+            document.getElementById('client-name').textContent = `Client: ${name}`;
+            document.getElementById('client-address').textContent = `Address: ${address}`;
+            document.getElementById('client-contact').textContent = contact;
+        }
+
+        function addItem() {
+            const newRow = document.querySelector('.item-row').cloneNode(true);
+            newRow.querySelectorAll('td')[1].textContent = prompt('Enter item description:');
+            newRow.querySelectorAll('td')[2].textContent = `$${prompt('Enter unit price:')}`;
+            newRow.querySelectorAll('td')[3].textContent = prompt('Enter quantity:');
+            newRow.querySelectorAll('td')[4].textContent = '$0.00'; // set total to $0.00 for the new row
+            document.querySelector('tbody').appendChild(newRow);
+            updateTotal();
+
+            // Increment invoice number
+            invoiceCounter++;
+            updateInvoiceNumber();
+        }
+
+        function removeItem() {
+            const rows = document.querySelectorAll('.item-row');
+            if (rows.length > 1) {
+                rows[rows.length - 1].remove();
+                updateTotal();
+            }
+        }
+
+        function updateTotal() {
+            const rows = document.querySelectorAll('.item-row');
+            let total = 0;
+
+            rows.forEach(row => {
+                const quantity = parseInt(row.children[3].textContent);
+                const price = parseFloat(row.children[2].textContent.replace('$', ''));
+                const subtotal = quantity * price;
+                total += subtotal;
+                row.children[4].textContent = `$${subtotal.toFixed(2)}`;
+            });
+
+            document.getElementById('total').innerHTML = `<p>Total: $${total.toFixed(2)}</p>`;
+        }
+    </script>
+
+</body>
+</html>
